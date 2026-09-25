@@ -25,19 +25,62 @@ class Node:
 
         return prev
 
+    def palindrome(self) -> bool:
+        fast: Node | None = self
+        slow: Node | None = self
+
+        # Find middle
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+
+        # Reverse Second Half
+        # If Fast is none means the list was even and slow is on the first of next half
+        # If fast is not none means the list was odd and slow is on the middle of list
+        # So start the curr correctly to ensure we cover all elements in second half
+        curr: Node | None = slow if fast is None else slow.next
+        prev: Node | None = None
+
+        while curr:
+            temp = curr.next
+            curr.next = prev
+            prev = curr
+            curr = temp
+
+        # Compare Both Halves
+        left: Node | None = self
+        right: Node | None = prev
+        
+        while left and right:
+            if left.data != right.data: return False
+            left = left.next
+            right = right.next
+        return True
+
+
+
+        
+
+
+
 head = Node(1)
 head.insertNode(2)
 head.insertNode(3)
 head.insertNode(4)
-head.insertNode(5)
+head.insertNode(6)
+head.insertNode(3)
+head.insertNode(2)
+head.insertNode(1)
 
-temp = head
-while temp:
-    print(temp.data)
-    temp = temp.next
+# temp = head
+# while temp:
+#     print(temp.data)
+#     temp = temp.next
 
-revList = head.reverseList()
+# revList = head.reverseList()
 
-while revList:
-    print(revList.data)
-    revList = revList.next
+# while revList:
+#     print(revList.data)
+#     revList = revList.next
+
+print(head.palindrome())
